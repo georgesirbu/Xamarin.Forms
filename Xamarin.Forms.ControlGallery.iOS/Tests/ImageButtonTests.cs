@@ -43,7 +43,7 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 				contentPage.Layout(new Rectangle(0, 0, 1200, 1200));
 
 				// if I use a local image the image actually does load but I fear that this
-				// is just luck and at some point it mightt randomly break
+				// is just luck and at some point it might randomly break
 				var image = GetNativeControl(imageButtonFill).ImageView.Image;
 
 				// to illustrate async loading I added this image which uses a url
