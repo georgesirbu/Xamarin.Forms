@@ -27,7 +27,11 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 
 			ImageButton imageButtonurl = new ImageButton()
 			{
-				Source = "https://raw.githubusercontent.com/xamarin/Xamarin.Forms/master/Xamarin.Forms.ControlGallery.iOS/Resources/xamarin_logo%403x.png"
+				Source = new UriImageSource()
+				{
+					Uri = new Uri("https://upload.wikimedia.org/wikipedia/commons/3/3d/LARGE_elevation.jpg"),
+					CachingEnabled = false
+				}
 			};
 
 			stackLayout.Children.Add(imageButtonFill);
@@ -48,6 +52,7 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 
 				// to illustrate async loading I added this image which uses a url
 				// which will be delayed with loading. Here you'll notice this is null
+				// I had to turn caching off because with caching enabled it shows up the second time you try
 				var imageUrl = GetNativeControl(imageButtonurl).ImageView.Image;
 			}
 		}
