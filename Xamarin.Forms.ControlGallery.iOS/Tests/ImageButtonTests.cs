@@ -24,7 +24,14 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 				AutomationId = "TestImage"
 			};
 
+
+			ImageButton imageButtonurl = new ImageButton()
+			{
+				Source = "https://raw.githubusercontent.com/xamarin/Xamarin.Forms/master/Xamarin.Forms.ControlGallery.iOS/Resources/xamarin_logo%403x.png"
+			};
+
 			stackLayout.Children.Add(imageButtonFill);
+			stackLayout.Children.Add(imageButtonurl);
 
 			ContentPage contentPage = new ContentPage()
 			{
@@ -33,25 +40,16 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 
 			using(var pageRenderer = GetRenderer(contentPage))
 			{
-				var nativeControl = GetNativeControl(imageButtonFill);
 				contentPage.Layout(new Rectangle(0, 0, 1200, 1200));
 
-				var image = nativeControl.ImageView.Image;
+				// if I use a local image the image actually does load but I fear that this
+				// is just luck and at some point it mightt randomly break
+				var image = GetNativeControl(imageButtonFill).ImageView.Image;
 
-				imageButtonFill.SizeChanged += (_, __) =>
-				{
-					image = nativeControl.ImageView.Image;
-				};
-
-				/*await Task.Run(async () =>
-					{
-						while(true)
-							await Task.Delay(5000);
-					})
-					.ConfigureAwait(false);*/
+				// to illustrate async loading I added this image which uses a url
+				// which will be delayed with loading. Here you'll notice this is null
+				var imageUrl = GetNativeControl(imageButtonurl).ImageView.Image;
 			}
-
-			//return true;
 		}
 	}
 }
