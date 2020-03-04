@@ -10,7 +10,7 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 	public class ImageButtonTests : PlatformTestFixture
 	{
 
-		[Test, Category("ImageButton")]
+		[Test(), Category("ImageButton")]
 		[Description("ImageButton Aspects")]
 		public void ImageButtonAspect()
 		{
@@ -36,12 +36,22 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 				var nativeControl = GetNativeControl(imageButtonFill);
 				contentPage.Layout(new Rectangle(0, 0, 1200, 1200));
 
-				var image = nativeControl.ImageView;
-				var height = image.Image.Size.Height;
-				var width = image.Image.Size.Width;
+				var image = nativeControl.ImageView.Image;
 
-				// and then here I'll test pixels
+				imageButtonFill.SizeChanged += (_, __) =>
+				{
+					image = nativeControl.ImageView.Image;
+				};
+
+				/*await Task.Run(async () =>
+					{
+						while(true)
+							await Task.Delay(5000);
+					})
+					.ConfigureAwait(false);*/
 			}
+
+			//return true;
 		}
 	}
 }
