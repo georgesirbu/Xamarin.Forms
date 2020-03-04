@@ -83,5 +83,12 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 			var viewRenderer = renderer.NativeView as ButtonRenderer;
 			return viewRenderer.Control;
 		}
+
+		protected UIButton GetNativeControl(ImageButton button)
+		{
+			var renderer = GetRenderer(button);
+			var viewRenderer = renderer.NativeView as ImageButtonRenderer;
+			return viewRenderer.Control;
+		}
 	}
 }

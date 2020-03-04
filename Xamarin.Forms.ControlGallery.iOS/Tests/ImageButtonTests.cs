@@ -1,24 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using UIKit;
 
 namespace Xamarin.Forms.ControlGallery.iOS.Tests
 {
 	public class ImageButtonTests : PlatformTestFixture
 	{
 
-		[Test, Category("IsVisible")]
-		[Description("VisualElement visibility should match renderer visibility")]
+		[Test, Category("ImageButton")]
+		[Description("ImageButton Aspects")]
 		public void ImageButtonAspect()
 		{
-			var imageButtonAspectFill = new ImageButton() { Source =  "coffee.png", Aspect = Aspect.AspectFill };
-			var imageButtonAspectFit = new ImageButton() { Source = "coffee.png", Aspect = Aspect.AspectFit };
-			var imageButtonFill = new ImageButton() { Source = "coffee.png", Aspect = Aspect.Fill };
+			StackLayout stackLayout = new StackLayout();
+			string imageSource = "coffee.png";
 
-			using (var imageButtonAspectFillRenderer = GetRenderer(imageButtonAspectFill))
-			using (var imageButtonAspectFitRenderer = GetRenderer(imageButtonAspectFit))
-			using (var imageButtonFillRenderer = GetRenderer(imageButtonFill))
+			ImageButton imageButtonFill = new ImageButton()
 			{
-				imageButtonAspectFill.Layout(new Rectangle(0, 0, 200, 200));
+				Source = imageSource,
+				Aspect = Aspect.Fill,
+				AutomationId = "TestImage"
+			};
+
+			stackLayout.Children.Add(imageButtonFill);
+
+			ContentPage contentPage = new ContentPage()
+			{
+				Content = stackLayout
+			};
+
+			using(var pageRenderer = GetRenderer(contentPage))
+			{
+				var nativeControl = GetNativeControl(imageButtonFill);
+				contentPage.Layout(new Rectangle(0, 0, 1200, 1200));
+
+				var image = nativeControl.ImageView;
+				var height = image.Image.Size.Height;
+				var width = image.Image.Size.Width;
+
+				// and then here I'll test pixels
 			}
 		}
 	}
