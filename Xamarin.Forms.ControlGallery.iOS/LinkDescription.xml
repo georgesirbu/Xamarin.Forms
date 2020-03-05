@@ -7,4 +7,5 @@
     <namespace fullname="Xamarin.Forms.Controls.Tests" />
   </assembly>
   <assembly fullname="nunit.framework"/>
+  <assembly fullname="mscorlib"/>
 </linker>

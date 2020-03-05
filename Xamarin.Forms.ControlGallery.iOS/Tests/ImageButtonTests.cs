@@ -12,7 +12,7 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 
 		[Test(), Category("ImageButton")]
 		[Description("ImageButton Aspects")]
-		public void ImageButtonAspect()
+		public async Task ImageButtonAspect()
 		{
 			StackLayout stackLayout = new StackLayout();
 			string imageSource = "coffee.png";
@@ -34,7 +34,7 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 				}
 			};
 
-			stackLayout.Children.Add(imageButtonFill);
+			//stackLayout.Children.Add(imageButtonFill);
 			stackLayout.Children.Add(imageButtonurl);
 
 			ContentPage contentPage = new ContentPage()
@@ -42,19 +42,33 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 				Content = stackLayout
 			};
 
-			using(var pageRenderer = GetRenderer(contentPage))
+			await Device.InvokeOnMainThreadAsync(async () =>
 			{
-				contentPage.Layout(new Rectangle(0, 0, 1200, 1200));
+				using (var pageRenderer = GetRenderer(contentPage))
+				{
+					contentPage.Layout(new Rectangle(0, 0, 1200, 1200));
 
-				// if I use a local image the image actually does load but I fear that this
-				// is just luck and at some point it might randomly break
-				var image = GetNativeControl(imageButtonFill).ImageView.Image;
+					// if I use a local image the image actually does load but I fear that this
+					// is just luck and at some point it might randomly break
+					var image = GetNativeControl(imageButtonFill).ImageView.Image;
 
-				// to illustrate async loading I added this image which uses a url
-				// which will be delayed with loading. Here you'll notice this is null
-				// I had to turn caching off because with caching enabled it shows up the second time you try
-				var imageUrl = GetNativeControl(imageButtonurl).ImageView.Image;
-			}
+					// to illustrate async loading I added this image which uses a url
+					// which will be delayed with loading. Here you'll notice this is null
+					// I had to turn caching off because with caching enabled it shows up the second time you try
+					var control = GetNativeControl(imageButtonurl);
+					var imageUrl = control.ImageView.Image;
+
+					while (imageUrl == null)
+					{
+						await Task.Delay(2000);
+						imageUrl = control.ImageView.Image;
+					}
+				}
+
+			})
+			.ConfigureAwait(false);
+
+			Assert.Pass();
 		}
 	}
 }

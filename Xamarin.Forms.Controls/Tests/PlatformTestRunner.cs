@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using NUnit;
 using NUnit.Framework.Api;
 using NUnit.Framework.Interfaces;
@@ -45,14 +46,15 @@ namespace Xamarin.Forms.Controls.Tests
 					// renderer properties. It's a less nice runner experience, because we don't get progress updates
 					// while it runs, but that's life. Anyway, we push the test runs onto the main thread and wait.
 
-					Device.BeginInvokeOnMainThread(() =>
+					_ = Task.Run(async () =>
 					{
 						runner.Load(controls, testRunSettings);
-						runner.Run(_testListener, testFilter);
+						await Task.Run(() => runner.Run(_testListener, testFilter)).ConfigureAwait(false);
 
 						runner.Load(platform, testRunSettings);
-						runner.Run(_testListener, testFilter);
-					});
+						await Task.Run(() => runner.Run(_testListener, testFilter)).ConfigureAwait(false);
+
+					}).ConfigureAwait(false);
 				}
 				else
 				{

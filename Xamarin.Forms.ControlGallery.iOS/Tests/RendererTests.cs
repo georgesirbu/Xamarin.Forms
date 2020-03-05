@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace Xamarin.Forms.ControlGallery.iOS.Tests
 {
@@ -7,13 +8,18 @@ namespace Xamarin.Forms.ControlGallery.iOS.Tests
 	public class RendererTests : PlatformTestFixture
 	{
 		[Test(Description = "Basic sanity check that Label text matches renderer text")]
-		public void LabelTextMatchesRendererText()
+		public async Task LabelTextMatchesRendererText()
 		{
-			var label = new Label { Text = "foo" };
-			using (var uiLabel = GetNativeControl(label))
+			await Device.InvokeOnMainThreadAsync(() =>
 			{
-				Assert.That(label.Text == uiLabel.Text);
-			}
+				var label = new Label { Text = "foo" };
+				using (var uiLabel = GetNativeControl(label))
+				{
+					Assert.That(label.Text == uiLabel.Text);
+				}
+			});
+
+			Assert.Pass();
 		}
 	}
 }
